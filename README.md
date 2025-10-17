@@ -59,18 +59,22 @@ flowchart LR
     C1 --> E1
     P1 --> E1
     S1 --> E1
+
     G1 --> C1
     G1 --> P1
     G1 --> S1
+
     C1 --> CDB
     P1 --> PDB
     S1 --> SDB
+
 %% Cross-service communication
     P1 --> C1:::api
     S1 --> P1:::api
     S1 --> C1:::api
+
 %% ========= STYLES =========
-    classDef api stroke-dasharray: 3 3, stroke-width: 2px, stroke: #f39c12;
+    classDef api stroke-dasharray: 3 3,stroke-width:2px,stroke:#f39c12;
 ```
 
 ---
