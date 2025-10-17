@@ -1,13 +1,14 @@
+-- V002__create_glass_size_table.sql
 CREATE TABLE glass_size (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    version INT NOT NULL,
+    version INT NOT NULL DEFAULT 1,
     name VARCHAR(50) NOT NULL,
     volume_ml INT NOT NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Populate initial data
+-- Populate glass sizes
 INSERT INTO glass_size (version, name, volume_ml) VALUES
 (1, 'HALF', 250),
 (1, 'PINT', 473),
