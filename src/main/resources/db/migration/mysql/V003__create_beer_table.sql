@@ -1,0 +1,13 @@
+CREATE TABLE beer (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    version INT NOT NULL,
+    beer_name VARCHAR(100) NOT NULL,
+    beer_style VARCHAR(50) NOT NULL,
+    ibu INT,
+    abv DOUBLE,
+    brewery_id BIGINT,
+    active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_brewery FOREIGN KEY (brewery_id) REFERENCES brewery(id)
+);
