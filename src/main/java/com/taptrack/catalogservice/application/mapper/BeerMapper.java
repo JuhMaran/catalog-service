@@ -24,7 +24,6 @@ public interface BeerMapper {
   @Mapping(target = "breweryId", source = "brewery")
   BeerResponse toResponse(Beer entity);
 
-
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "version", ignore = true)
   @Mapping(target = "createdDate", ignore = true)
