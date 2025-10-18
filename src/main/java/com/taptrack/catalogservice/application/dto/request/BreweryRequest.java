@@ -12,6 +12,11 @@ import java.io.Serializable;
  */
 @Builder
 public record BreweryRequest(
+
+  // TODO: Validar campos
+
+  // Mínimo 3 e máximo 150 caracteres
+  // Campo obrigatório
   String name,
   String city,
   String state,

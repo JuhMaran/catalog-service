@@ -13,7 +13,12 @@ import java.io.Serializable;
  */
 @Builder
 public record GlassSizeRequest(
+
+  // TODO: Validar campos
+
   GlassType name,
+
+  // Mínimo 0 (valor default)
   Integer volumeMl
 ) implements Serializable {
 }
