@@ -6,6 +6,7 @@ import com.taptrack.catalogservice.application.mapper.BreweryMapper;
 import com.taptrack.catalogservice.domain.model.Brewery;
 import com.taptrack.catalogservice.domain.repository.BreweryRepository;
 import com.taptrack.catalogservice.domain.service.BreweryService;
+import com.taptrack.catalogservice.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class BreweryServiceImpl implements BreweryService {
   @Transactional
   public BreweryResponse updateBrewery(Long id, BreweryRequest request) {
     Brewery brewery = breweryRepository.findById(id)
-      .orElseThrow(() -> new IllegalArgumentException("Cervejaria com ID " + id + " não encontrada"));
+      .orElseThrow(() -> new ResourceNotFoundException("Cervejaria com ID " + id + " não encontrada"));
     breweryMapper.updateFromRequest(request, brewery);
     brewery.setUpdateDate(LocalDateTime.now());
     return breweryMapper.toResponse(breweryRepository.save(brewery));
@@ -51,7 +52,7 @@ public class BreweryServiceImpl implements BreweryService {
   @Transactional
   public void deleteBrewery(Long id) {
     if (!breweryRepository.existsById(id))
-      throw new IllegalArgumentException("Cervejaria com ID " + id + " não encontrada");
+      throw new ResourceNotFoundException("Cervejaria com ID " + id + " não encontrada");
     breweryRepository.deleteById(id);
   }
 
@@ -59,7 +60,7 @@ public class BreweryServiceImpl implements BreweryService {
   @Transactional(readOnly = true)
   public BreweryResponse findBreweryById(Long id) {
     Brewery brewery = breweryRepository.findById(id)
-      .orElseThrow(() -> new IllegalArgumentException("Cervejaria com ID " + id + " não encontrada"));
+      .orElseThrow(() -> new ResourceNotFoundException("Cervejaria com ID " + id + " não encontrada"));
     return breweryMapper.toResponse(brewery);
   }
 

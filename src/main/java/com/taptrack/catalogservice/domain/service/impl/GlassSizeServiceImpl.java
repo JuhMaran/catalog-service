@@ -7,6 +7,7 @@ import com.taptrack.catalogservice.domain.model.GlassSize;
 import com.taptrack.catalogservice.domain.model.enums.GlassType;
 import com.taptrack.catalogservice.domain.repository.GlassSizeRepository;
 import com.taptrack.catalogservice.domain.service.GlassSizeService;
+import com.taptrack.catalogservice.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class GlassSizeServiceImpl implements GlassSizeService {
   @Transactional
   public GlassSizeResponse updateGlassSize(Long id, GlassSizeRequest request) {
     GlassSize glass = glassSizeRepository.findById(id)
-      .orElseThrow(() -> new IllegalArgumentException("Glass size not found with ID: " + id));
+      .orElseThrow(() -> new ResourceNotFoundException("Glass size not found with ID: " + id));
     glassSizeMapper.updateFromRequest(request, glass);
     glass.setUpdateDate(LocalDateTime.now());
     return glassSizeMapper.toResponse(glassSizeRepository.save(glass));
@@ -52,7 +53,7 @@ public class GlassSizeServiceImpl implements GlassSizeService {
   @Transactional
   public void delete(Long id) {
     if (!glassSizeRepository.existsById(id)) {
-      throw new IllegalArgumentException("Glass size not found with ID: " + id);
+      throw new ResourceNotFoundException("Glass size not found with ID: " + id);
     }
     glassSizeRepository.deleteById(id);
   }
@@ -62,7 +63,7 @@ public class GlassSizeServiceImpl implements GlassSizeService {
   public GlassSizeResponse findGlassSizeById(Long id) {
     return glassSizeRepository.findById(id)
       .map(glassSizeMapper::toResponse)
-      .orElseThrow(() -> new IllegalArgumentException("Glass size not found with ID: " + id));
+      .orElseThrow(() -> new ResourceNotFoundException("Glass size not found with ID: " + id));
   }
 
   @Override
@@ -76,7 +77,7 @@ public class GlassSizeServiceImpl implements GlassSizeService {
   @Transactional(readOnly = true)
   public GlassSizeResponse findGlassSizeByType(GlassType type) {
     GlassSize glass = glassSizeRepository.findByName(type)
-      .orElseThrow(() -> new IllegalArgumentException("Glass size not found with type: " + type));
+      .orElseThrow(() -> new ResourceNotFoundException("Glass size not found with type: " + type));
     return glassSizeMapper.toResponse(glass);
   }
 

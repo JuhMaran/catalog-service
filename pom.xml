@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.taptrack</groupId>
     <artifactId>catalog-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>catalog-service</name>
     <description>Responsible for product catalog management</description>
     <url>https://github.com/JuhMaran/catalog-service</url>
@@ -54,6 +54,7 @@
         <xstream.version>1.4.21</xstream.version>
         <google.guava.version>33.5.0-jre</google.guava.version>
         <logback.version>1.5.19</logback.version>
+        <lib.custom-exceptions.version>1.0.3</lib.custom-exceptions.version>
     </properties>
     <dependencies>
         <!-- Web + Validation -->
@@ -169,7 +170,7 @@
         <dependency>
             <groupId>com.julianemaran.libraries</groupId>
             <artifactId>custom-exceptions</artifactId>
-            <version>1.0.1</version>
+            <version>${lib.custom-exceptions.version}</version>
         </dependency>
         <!-- Test -->
         <dependency>
@@ -244,11 +245,11 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/JuhMaran/custom-exceptions</url>
-        </repository>
-    </repositories>
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>github</id>-->
+    <!--            <url>https://maven.pkg.github.com/JuhMaran/custom-exceptions</url>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
 
 </project>

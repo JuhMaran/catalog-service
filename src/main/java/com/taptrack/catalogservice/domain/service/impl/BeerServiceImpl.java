@@ -9,6 +9,7 @@ import com.taptrack.catalogservice.domain.model.enums.BeerStyle;
 import com.taptrack.catalogservice.domain.repository.BeerRepository;
 import com.taptrack.catalogservice.domain.repository.BreweryRepository;
 import com.taptrack.catalogservice.domain.service.BeerService;
+import com.taptrack.catalogservice.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class BeerServiceImpl implements BeerService {
   @Transactional
   public BeerResponse createBeer(BeerRequest request) {
     Brewery brewery = breweryRepository.findById(request.breweryId())
-      .orElseThrow(() -> new IllegalArgumentException("Cervejaria com ID " + request.breweryId() + " não encontrada"));
+      .orElseThrow(() -> new ResourceNotFoundException("Cervejaria com ID " + request.breweryId() + " não encontrada"));
 
     Beer beer = beerMapper.toEntity(request);
     beer.setBrewery(brewery);
@@ -52,14 +53,14 @@ public class BeerServiceImpl implements BeerService {
   public BeerResponse updateBeer(Long id, BeerRequest request) {
 
     Beer beer = beerRepository.findById(id)
-      .orElseThrow(() -> new IllegalArgumentException("Cerveja com ID " + id + " não encontrada"));
+      .orElseThrow(() -> new ResourceNotFoundException("Cerveja com ID " + id + " não encontrada"));
 
     beerMapper.updateFromRequest(request, beer);
     beer.setUpdateDate(LocalDateTime.now());
 
     if (request.breweryId() != null) {
       Brewery brewery = breweryRepository.findById(request.breweryId())
-        .orElseThrow(() -> new IllegalArgumentException("Cervejaria com ID " + request.breweryId() + " não encontrada"));
+        .orElseThrow(() -> new ResourceNotFoundException("Cervejaria com ID " + request.breweryId() + " não encontrada"));
       beer.setBrewery(brewery);
     }
 
@@ -70,7 +71,7 @@ public class BeerServiceImpl implements BeerService {
   @Transactional
   public void deleteBeer(Long id) {
     if (!beerRepository.existsById(id))
-      throw new IllegalArgumentException("Cerveja com ID " + id + " não encontrada");
+      throw new ResourceNotFoundException("Cerveja com ID " + id + " não encontrada");
     beerRepository.deleteById(id);
   }
 
@@ -78,7 +79,7 @@ public class BeerServiceImpl implements BeerService {
   @Transactional(readOnly = true)
   public BeerResponse findBeerById(Long id) {
     Beer beer = beerRepository.findById(id)
-      .orElseThrow(() -> new IllegalArgumentException("Cerveja com ID " + id + " não encontrada"));
+      .orElseThrow(() -> new ResourceNotFoundException("Cerveja com ID " + id + " não encontrada"));
     return beerMapper.toResponse(beer);
   }
 
