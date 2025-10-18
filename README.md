@@ -4,80 +4,7 @@ Responsável por gerenciar cervejas, categorias, estilos e cervejarias.
 
 ---
 
-## Tecnologias e Ferramentas
-
-| Layer             | Technology / Pattern          |
-|-------------------|-------------------------------|
-| **Framework**     | Spring Boot 3.5.6             |
-| **Language**      | Java 25                       |
-| **Database**      | MySQL                         |
-| **ORM**           | Spring Data JPA               |
-| **DTO Mapping**   | MapStruct                     |
-| **Communication** | REST (Spring Cloud OpenFeign) |
-| **Discovery**     | Eureka Server                 |
-| **Gateway**       | Spring Cloud Gateway          |
-| **Config**        | Spring Cloud Config (future)  |
-| **Logging**       | Logback + SLF4J               |
-| **Build**         | Maven                         |
-
----
-
-## Diagrama de Arquitetura
-
-```mermaid
-flowchart LR
-%% ========= NODES =========
-    subgraph Gateway["🟡 API Gateway"]
-        direction TB
-        G1["Spring Cloud Gateway<br/>Routing + Auth (future)"]
-    end
-
-    subgraph Eureka["🟦 Service Discovery"]
-        E1["Eureka Server<br/>(Service Registry)"]
-    end
-
-    subgraph Catalog["🟤 catalog-service"]
-        direction TB
-        C1["Spring Boot App<br/>Beers, Breweries, Styles"]
-        CDB[(MySQL<br/>catalog_db)]
-    end
-
-    subgraph Pricing["🟢 pricing-service"]
-        direction TB
-        P1["Spring Boot App<br/>Prices, Tap List"]
-        PDB[(MySQL<br/>pricing_db)]
-    end
-
-    subgraph Sales["🔵 sales-service"]
-        direction TB
-        S1["Spring Boot App<br/>Orders, Order Items"]
-        SDB[(MySQL<br/>sales_db)]
-    end
-
-%% ========= CONNECTIONS =========
-    G1 --> E1
-    C1 --> E1
-    P1 --> E1
-    S1 --> E1
-
-    G1 --> C1
-    G1 --> P1
-    G1 --> S1
-
-    C1 --> CDB
-    P1 --> PDB
-    S1 --> SDB
-
-%% Cross-service communication
-    P1 --> C1:::api
-    S1 --> P1:::api
-    S1 --> C1:::api
-
-%% ========= STYLES =========
-    classDef api stroke-dasharray: 3 3,stroke-width:2px,stroke:#f39c12;
-```
-
----
+[Saiba mais na Wiki do MS Catalog Service](https://github.com/JuhMaran/catalog-service/wiki)
 
 ## Database
 
@@ -165,7 +92,6 @@ erDiagram
 %% === RELATIONSHIPS ===
     BREWERY ||--o{ BEER: "produces"
     BEER }o--|| GLASS_SIZE: "served in (future link)"
-
 ```
 
 ### Descrição das Relações
@@ -282,3 +208,15 @@ src
 | **`flyway.baseline-on-migrate`**  | Permite rodar migrações mesmo em bancos existentes.                        |
 | **`management.endpoints`**        | Expõe `health`, `info` e `metrics` para observabilidade (Prometheus, etc). |
 
+---
+
+## Observações
+
+* Uso do `Optional`: utilizado para retornos de busca exata e evitar `null`.
+* Métodos como `findByBeerNameContainingIgnoreCase` facilitam buscas parciais, como digitar “IPA” e retornar todas as
+  cervejas com IPA no nome.
+* `BeerRepository` permite buscar por cervejaria via `breweryName` usando Spring Data derived query.
+* `@Mapper(componentModel = "spring")` permite injetar os mappers via `@Autowired`
+* `updateFromRequest` permite **autlização parcial** de uma entidade com dados do DTO.
+* Todos os DTOs usam `record` para **imutabilidade** e `@Builder` do Lombok para facilidade de construção.
+* `BeerResponse` retorna `breweryId` apenas, evitando exposição direta do objeto `Brewery`.
