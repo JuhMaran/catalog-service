@@ -18,17 +18,17 @@ public interface BeerMapper {
   @Mapping(target = "version", ignore = true)
   @Mapping(target = "createdDate", ignore = true)
   @Mapping(target = "updateDate", ignore = true)
-  @Mapping(target = "brewery", source = "breweryId")
+  @Mapping(target = "brewery.id", source = "breweryId")
   Beer toEntity(BeerRequest request);
 
-  @Mapping(target = "breweryId", source = "brewery")
+  @Mapping(target = "breweryId", source = "brewery.id")
   BeerResponse toResponse(Beer entity);
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "version", ignore = true)
   @Mapping(target = "createdDate", ignore = true)
   @Mapping(target = "updateDate", ignore = true)
-  @Mapping(target = "brewery", source = "breweryId")
+  @Mapping(target = "brewery.id", source = "breweryId")
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   void updateFromRequest(BeerRequest request, @MappingTarget Beer entity);
 

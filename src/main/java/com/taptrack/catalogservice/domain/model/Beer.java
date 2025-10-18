@@ -59,6 +59,7 @@ public class Beer {
   /**
    * valor default = true
    */
+  @Builder.Default
   private Boolean active = true;
 
   @Column(updatable = false)
