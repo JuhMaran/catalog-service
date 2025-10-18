@@ -49,8 +49,8 @@ public class Brewery {
   private List<Beer> beers;
 
   @Column(updatable = false)
-  private LocalDateTime createdDate = LocalDateTime.now();
+  private LocalDateTime createdDate;
 
-  private LocalDateTime updateDate = LocalDateTime.now();
+  private LocalDateTime updateDate;
 
 }
